@@ -1,2 +1,2 @@
 # Diabetes-Care
-R code website for diabetes education
+QR code website for diabetes education
