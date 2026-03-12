@@ -1,268 +1,594 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Diabetes Care Guide</title>
 
-<title>Diabetes Care Guide</title>
+  <style>
+    :root {
+      --bg: #eaf5fa;
+      --bg-soft: #f7fbfd;
+      --card: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(44, 111, 134, 0.12);
+      --primary: #2c6f86;
+      --primary-dark: #1f5365;
+      --accent: #66b9cf;
+      --text: #24343b;
+      --muted: #5a6d76;
+      --shadow: 0 10px 30px rgba(32, 83, 101, 0.10);
+      --radius: 22px;
+      --maxw: 980px;
+    }
 
-<style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-font-family: Arial, Helvetica, sans-serif;
-margin:0;
-background:#DDEFF6;
-color:#2A2A2A;
-line-height:1.6;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-header{
-background:#BFDCE7;
-padding:40px;
-text-align:center;
-}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      color: var(--text);
+      line-height: 1.65;
+      background:
+        radial-gradient(circle at top left, #f7fcff 0%, #eaf5fa 30%, #dceef5 100%);
+    }
 
-h1{
-margin-top:0;
-}
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
 
-section{
-background:white;
-margin:30px auto;
-padding:30px;
-max-width:900px;
-border-radius:10px;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
+    a:hover {
+      color: var(--primary-dark);
+    }
 
-h2{
-color:#2C6F86;
-}
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(234, 245, 250, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(44, 111, 134, 0.08);
+    }
 
-ul{
-padding-left:20px;
-}
+    .topbar-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
 
-.image{
-text-align:center;
-margin:20px 0;
-}
+    .topbar a {
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: 0.2s ease;
+    }
 
-.image img{
-max-width:100%;
-border-radius:6px;
-}
+    .topbar a:hover {
+      background: rgba(102, 185, 207, 0.15);
+    }
 
-figcaption{
-font-size:0.9em;
-color:#555;
-margin-top:5px;
-}
+    .hero {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 48px 20px 24px;
+    }
 
-footer{
-background:#BFDCE7;
-padding:20px;
-text-align:center;
-font-size:0.9em;
-}
+    .hero-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.90));
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      border-radius: 30px;
+      padding: 38px 26px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-</style>
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -80px;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, rgba(102,185,207,0.18), transparent 70%);
+      border-radius: 50%;
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .logo-wrap img {
+      width: 180px;
+      max-width: 70%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 10px 18px rgba(32, 83, 101, 0.12));
+    }
+
+    h1 {
+      margin: 12px 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 0 auto 22px;
+      color: var(--muted);
+      font-size: 1.06rem;
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .pill-btn {
+      display: inline-block;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid rgba(44, 111, 134, 0.12);
+      color: var(--primary-dark);
+      font-weight: 600;
+      box-shadow: 0 6px 18px rgba(32, 83, 101, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .pill-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(32, 83, 101, 0.10);
+      background: #fafdff;
+    }
+
+    .container {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 20px 46px;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      margin: 22px 0;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: var(--primary-dark);
+      font-size: clamp(1.45rem, 2.5vw, 2rem);
+    }
+
+    h3 {
+      color: var(--primary);
+      margin-bottom: 8px;
+      margin-top: 24px;
+      font-size: 1.18rem;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    .checklist,
+    .icon-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li,
+    .icon-list li {
+      padding-left: 34px;
+      position: relative;
+      margin: 12px 0;
+    }
+
+    .checklist li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .complication-card {
+      padding: 20px;
+      background: linear-gradient(180deg, #ffffff, #f7fbfd);
+      border: 1px solid rgba(44, 111, 134, 0.10);
+      border-radius: 18px;
+      margin: 18px 0 22px;
+    }
+
+    .image-box {
+      margin: 16px 0 12px;
+      text-align: center;
+    }
+
+    .image-box img {
+      width: 100%;
+      max-width: 720px;
+      border-radius: 18px;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 10px 24px rgba(32, 83, 101, 0.10);
+    }
+
+    figcaption {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .jump-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .resource-box {
+      background: linear-gradient(180deg, #fbfeff, #f3fafd);
+      border: 1px solid rgba(44, 111, 134, 0.10);
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-top: 16px;
+    }
+
+    .ref-list p {
+      margin-bottom: 12px;
+      word-break: break-word;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 16px 20px 40px;
+      font-size: 0.95rem;
+    }
+
+    @media (min-width: 900px) {
+      .hero-card {
+        padding: 44px 42px 36px;
+      }
+
+      section {
+        padding: 34px 30px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
-
-<h1>Welcome to Your Diabetes Care Guide</h1>
-
-<p>If you have been told your <strong>A1C is high</strong> or that you <strong>have diabetes</strong>, this guide will help you understand the next steps to protect your health.</p>
-
-<p><strong>Be sure to make an appointment with:</strong></p>
-
-<ul>
-<li>Your <strong>primary care provider</strong></li>
-<li>An <strong>eye doctor for a dilated eye exam</strong></li>
-</ul>
-
-<p><strong>You may also receive a referral to:</strong></p>
-
-<ul>
-<li>Podiatry for foot care</li>
-<li>Endocrinology for specialized diabetes care</li>
-<li>A dietitian for nutrition support</li>
-</ul>
-
-</header>
-
-<section>
-
-<h2>Preventing Diabetes Complications</h2>
-
-<p>Keeping your <strong>blood sugar in a healthy range</strong> can help protect your body and prevent long-term complications.</p>
-
-<ul>
-<li>Manage your blood sugar levels</li>
-<li>Eat healthy foods</li>
-<li>Get regular physical activity</li>
-<li>Take medications as prescribed</li>
-<li>Attend recommended medical appointments</li>
-</ul>
-
-<p>These steps help protect your:</p>
-
-<ul>
-<li>👁 Eyes</li>
-<li>🦶 Feet and nerves</li>
-<li>🩸 Kidneys</li>
-<li>❤️ Heart and blood vessels</li>
-</ul>
-
-</section>
-
-<section>
-
-<h2>Diabetes Complications</h2>
-
-<h3>👁 Diabetic Retinopathy</h3>
-
-<div class="image">
-
-<img src="retinopathy.jpg">
-
-<figcaption>
-Figure 1. Example of visual changes caused by diabetic retinopathy.  
-Image source: 1LowVision (n.d.).
-</figcaption>
-
-</div>
-
-<p>Diabetes can damage small blood vessels in the retina and lead to vision loss if not detected early.</p>
-
-<h3>🦶 Diabetic Foot Wounds</h3>
-
-<div class="image">
-
-<img src="foot-ulcer.jpg">
-
-<figcaption>
-Figure 2. Example of a diabetic foot ulcer.  
-Image source: Vohra Wound Care (n.d.).
-</figcaption>
-
-</div>
-
-<p>Diabetes can damage nerves and reduce blood flow in the feet, which can lead to wounds that heal slowly.</p>
-
-<h3>🩸 Kidney Disease</h3>
-
-<div class="image">
-
-<img src="dialysis.jpg">
-
-<figcaption>
-Figure 3. Example of dialysis treatment used when kidneys are severely damaged.  
-Image source: Keele University (n.d.).
-</figcaption>
-
-</div>
-
-<p>Diabetes can damage the kidneys over time. Regular testing can help detect kidney problems early.</p>
-
-</section>
-
-<section>
-
-<h2>👁 Eye Care</h2>
-
-<p>Diabetes can damage blood vessels in the retina. This condition is called <strong>diabetic retinopathy</strong>.</p>
-
-<p>People with type 2 diabetes should have a <strong>dilated eye exam</strong> when diagnosed and then as recommended by their eye doctor.</p>
-
-<p><strong>Call your provider if you notice:</strong></p>
-
-<ul>
-<li>Sudden vision changes</li>
-<li>Dark spots or floaters</li>
-<li>Blurred vision that does not improve</li>
-</ul>
-
-</section>
-
-<section>
-
-<h2>🦶 Foot Care & Neuropathy</h2>
-
-<p>Diabetes can damage nerves and reduce blood flow in the feet. This is called <strong>diabetic neuropathy</strong>.</p>
-
-<p><strong>Foot care tips:</strong></p>
-
-<ul>
-<li>Check your feet daily</li>
-<li>Look for cuts, blisters, redness, or swelling</li>
-<li>Wear comfortable shoes</li>
-<li>Keep feet clean and dry</li>
-<li>Tell your provider if you notice sores or numbness</li>
-</ul>
-
-</section>
-
-<section>
-
-<h2>🩸 Kidney Care</h2>
-
-<p>Diabetes can damage the kidneys over time. This is called <strong>diabetic kidney disease</strong>.</p>
-
-<p>Your provider may monitor kidney health using:</p>
-
-<ul>
-<li>Blood tests</li>
-<li>Urine tests to check for protein</li>
-</ul>
-
-<p>People with type 2 diabetes usually begin kidney screening at diagnosis and continue testing regularly.</p>
-
-</section>
-
-<section>
-
-<h2>Support & Educational links</h2>
-
-<p>Learning to manage diabetes can feel overwhelming at first. Support groups and education programs can help you learn practical skills and connect with others living with diabetes.</p>
-
-<ul>
-<li>Diabetes education programs - ADD LINKS </li>
-<li>Local diabetes support groups - ADD LINKS </li>
-<li>Registered dietitian services - ADD LINKS </li>
-<li>Online diabetes communities - ADD LINKS </li>
-</ul>
-
-</section>
-
-<section>
-
-<h2>References</h2>
-
-<p>American Diabetes Association. (2024). <em>Standards of care in diabetes—2024.</em> Diabetes Care.</p>
-
-<p>Centers for Disease Control and Prevention. (2024). <em>Diabetes basics.</em></p>
-
-<p>Keele University. (n.d.). <em>Home dialysis treatment</em> [Photograph].</p>
-
-<p>National Institute of Diabetes and Digestive and Kidney Diseases. (2023). <em>Diabetes overview.</em></p>
-
-<p>Vohra Wound Care. (n.d.). <em>Diabetic foot ulcer</em> [Photograph].</p>
-
-<p>Wexler, D. J. (2025). <em>Patient education: Preventing complications from diabetes (Beyond the Basics).</em> UpToDate.</p>
-
-<p>Wexler, D. J. (2025). <em>Patient education: Type 2 diabetes: Overview (Beyond the Basics).</em> UpToDate.</p>
-
-<p>1LowVision. (n.d.). <em>Diabetic retinopathy visual aid</em> [Image].</p>
-
-</section>
-
-<footer>
-
-</footer>
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <a href="#appointments">Appointments</a>
+      <a href="#prevention">Prevention</a>
+      <a href="#complications">Complications</a>
+      <a href="#eye-care">Eye Care</a>
+      <a href="#foot-care">Foot Care</a>
+      <a href="#kidney-care">Kidney Care</a>
+      <a href="#support">Support</a>
+      <a href="#references">References</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-card">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="Glucose monitor logo">
+      </div>
+
+      <h1>Your Diabetes Care Guide</h1>
+
+      <p class="subtitle">
+        If you have been told your <strong>A1C is high</strong> or that you <strong>have diabetes</strong>,
+        this guide will help you understand the next steps to protect your health.
+      </p>
+
+      <div class="quick-links">
+        <a class="pill-btn" href="#appointments">Start Here</a>
+        <a class="pill-btn" href="#complications">Complications</a>
+        <a class="pill-btn" href="#support">Support & Education</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="appointments">
+      <h2>Make an Appointment With</h2>
+
+      <ul class="checklist">
+        <li>Your <strong>primary care provider</strong></li>
+        <li>An <strong>eye doctor for a dilated eye exam</strong></li>
+      </ul>
+
+      <p><strong>You may also receive a referral to:</strong></p>
+
+      <ul class="checklist">
+        <li><strong>Podiatry</strong> for foot care</li>
+        <li><strong>Endocrinology</strong> for specialized diabetes care</li>
+        <li>A <strong>dietitian</strong> for nutrition support</li>
+      </ul>
+    </section>
+
+    <section id="prevention">
+      <h2>Preventing Diabetes Complications</h2>
+
+      <p>
+        Keeping your <strong>blood sugar in a healthy range</strong> can help protect your body
+        and prevent long-term complications.
+      </p>
+
+      <ul class="checklist">
+        <li>Manage your blood sugar levels</li>
+        <li>Eat healthy foods</li>
+        <li>Get regular physical activity</li>
+        <li>Take medications as prescribed</li>
+        <li>Attend recommended medical appointments</li>
+      </ul>
+
+      <p>These steps help protect your:</p>
+
+      <ul class="icon-list">
+        <li>👁 <strong>Eyes</strong></li>
+        <li>🦶 <strong>Feet and nerves</strong></li>
+        <li>🩸 <strong>Kidneys</strong></li>
+        <li>❤️ <strong>Heart and blood vessels</strong></li>
+      </ul>
+    </section>
+
+    <section id="complications">
+      <h2>Diabetes Complications</h2>
+
+      <p>
+        Over time, <strong>high blood sugar can damage different parts of the body</strong>.
+        Many complications develop slowly and may not cause symptoms at first, which is why
+        regular checkups and screenings are important.
+      </p>
+
+      <div class="complication-card">
+        <h3>👁 Diabetic Retinopathy</h3>
+
+        <figure class="image-box">
+          <img src="retinopathy.jpg" alt="Example of diabetic retinopathy visual changes">
+          <figcaption>
+            Figure 1. Example of visual changes caused by diabetic retinopathy. Image source: 1LowVision (n.d.).
+          </figcaption>
+        </figure>
+
+        <p>
+          Diabetes can damage the small blood vessels in the retina. This condition is called
+          <strong>diabetic retinopathy</strong> and can lead to vision loss if it is not detected early.
+        </p>
+
+        <a class="jump-link" href="#eye-care">→ Go to Eye Care</a>
+      </div>
+
+      <div class="complication-card">
+        <h3>🦶 Diabetic Foot Wounds</h3>
+
+        <figure class="image-box">
+          <img src="foot-ulcer.jpg" alt="Example of diabetic foot ulcer">
+          <figcaption>
+            Figure 2. Example of a diabetic foot ulcer. Image source: Vohra Wound Care (n.d.).
+          </figcaption>
+        </figure>
+
+        <p>
+          Diabetes can damage nerves and reduce blood flow in the feet. This can lead to
+          <strong>loss of feeling, sores, and infections</strong> that may take longer to heal.
+        </p>
+
+        <a class="jump-link" href="#foot-care">→ Go to Foot Care</a>
+      </div>
+
+      <div class="complication-card">
+        <h3>🩸 Kidney Disease</h3>
+
+        <figure class="image-box">
+          <img src="dialysis.jpg" alt="Example of dialysis treatment">
+          <figcaption>
+            Figure 3. Example of dialysis treatment used when kidneys are severely damaged. Image source: Keele University (n.d.).
+          </figcaption>
+        </figure>
+
+        <p>
+          Diabetes can damage the kidneys over time. Kidney disease may not cause symptoms early,
+          so regular testing is important.
+        </p>
+
+        <a class="jump-link" href="#kidney-care">→ Go to Kidney Care</a>
+      </div>
+    </section>
+
+    <section id="eye-care">
+      <h2>👁 Eye Care</h2>
+
+      <p>
+        Diabetes can damage the small blood vessels in the retina, the light-sensitive tissue at
+        the back of the eye. This condition is called <strong>diabetic retinopathy</strong>.
+      </p>
+
+      <p>
+        People with type 2 diabetes should have a <strong>dilated eye exam</strong> when they are
+        diagnosed and then as recommended by their eye doctor.
+      </p>
+
+      <p><strong>Call your provider if you notice:</strong></p>
+      <ul>
+        <li>Sudden vision changes</li>
+        <li>Dark spots or floaters</li>
+        <li>Blurred vision that does not improve</li>
+      </ul>
+
+      <div class="resource-box">
+        <strong>Helpful Resources</strong>
+        <ul>
+          <li>Educational information about diabetic eye disease</li>
+          <li>Scheduling information for dilated eye exams</li>
+          <li>Eye health resources for people with diabetes</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="foot-care">
+      <h2>🦶 Foot Care & Neuropathy</h2>
+
+      <p>
+        Diabetes can damage nerves and reduce blood flow in the feet. This is called
+        <strong>diabetic neuropathy</strong>. When nerve damage occurs, people may lose feeling
+        in their feet and may not notice injuries such as cuts, blisters, or sores.
+      </p>
+
+      <p>
+        Because wounds may heal more slowly in people with diabetes, small injuries can sometimes
+        lead to <strong>infections or serious foot problems</strong> if they are not treated early.
+      </p>
+
+      <p><strong>Foot care tips:</strong></p>
+      <ul>
+        <li>Check your feet every day for cuts, blisters, redness, or swelling</li>
+        <li>Look between your toes and on the bottoms of your feet</li>
+        <li>Wear comfortable, well-fitting shoes</li>
+        <li>Keep feet clean and dry</li>
+        <li>Tell your provider if you notice sores, numbness, or tingling</li>
+      </ul>
+
+      <p>
+        Your provider may recommend a <strong>foot exam each year</strong> to check circulation and nerve sensation.
+      </p>
+
+      <div class="resource-box">
+        <strong>Helpful Resources</strong>
+        <ul>
+          <li>Information about diabetic neuropathy</li>
+          <li>Foot care education for people with diabetes</li>
+          <li>Podiatry services and diabetic foot care resources</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="kidney-care">
+      <h2>🩸 Kidney Care</h2>
+
+      <p>
+        Diabetes can damage the kidneys over time. This condition is called
+        <strong>diabetic kidney disease</strong>.
+      </p>
+
+      <p>
+        The kidneys help filter waste from the blood. When they are damaged, protein can leak
+        into the urine and the kidneys may not work as well. Kidney problems often
+        <strong>do not cause symptoms early</strong>, which is why regular testing is important.
+      </p>
+
+      <p>Your provider may monitor kidney health using:</p>
+      <ul>
+        <li><strong>Blood tests</strong> to measure kidney function</li>
+        <li><strong>Urine tests</strong> to check for protein</li>
+      </ul>
+
+      <p>
+        People with type 2 diabetes usually begin kidney screening
+        <strong>at the time of diagnosis</strong> and continue testing regularly.
+      </p>
+
+      <p><strong>Call your provider if you notice:</strong></p>
+      <ul>
+        <li>Swelling in the legs or feet</li>
+        <li>Changes in urination</li>
+        <li>Persistent fatigue</li>
+      </ul>
+
+      <div class="resource-box">
+        <strong>Helpful Resources</strong>
+        <ul>
+          <li>Educational information about kidney disease and diabetes</li>
+          <li>Kidney health resources</li>
+          <li>Information about kidney testing and prevention</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="support">
+      <h2>🤝 Support & Education</h2>
+
+      <p>
+        Learning to manage diabetes can feel overwhelming at first. Support groups and education
+        programs can help you learn practical skills and connect with others living with diabetes.
+      </p>
+
+      <ul class="checklist">
+        <li>Diabetes education programs</li>
+        <li>Local diabetes support groups</li>
+        <li>Registered dietitian services</li>
+        <li>Online diabetes communities</li>
+      </ul>
+    </section>
+
+    <section id="references">
+      <h2>References</h2>
+
+      <div class="ref-list">
+        <p>American Diabetes Association. (2024). <em>Standards of care in diabetes—2024.</em> <em>Diabetes Care, 47</em>(Suppl. 1), S1–S350. https://doi.org/10.2337/dc24-SINT</p>
+
+        <p>Centers for Disease Control and Prevention. (2024). <em>Diabetes basics.</em> https://www.cdc.gov/diabetes/basics/index.html</p>
+
+        <p>Keele University. (n.d.). <em>Home dialysis treatment</em> [Photograph]. https://www.keele.ac.uk/about/news/2021/march/research-grant/home-dialysis-treatment.php</p>
+
+        <p>National Institute of Diabetes and Digestive and Kidney Diseases. (2023). <em>Diabetes overview.</em> https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes</p>
+
+        <p>Vohra Wound Care. (n.d.). <em>Diabetic foot ulcer</em> [Photograph]. https://vohrawoundcare.com/diabetic-foot-ulcer/</p>
+
+        <p>Wexler, D. J. (2025). <em>Patient education: Preventing complications from diabetes (Beyond the Basics).</em> UpToDate. https://www.uptodate.com</p>
+
+        <p>Wexler, D. J. (2025). <em>Patient education: Type 2 diabetes: Overview (Beyond the Basics).</em> UpToDate. https://www.uptodate.com</p>
+
+        <p>1LowVision. (n.d.). <em>Diabetic retinopathy visual aid</em> [Image]. https://1lowvision.com/Diabetic-Retinopathy-visual-aid</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Educational information for diabetes care.
+  </footer>
 
 </body>
 </html>
